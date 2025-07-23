@@ -7,24 +7,24 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
-    const location = useLocation()
     const navigate = useNavigate()
     const { login } = useAuth()
 
     // Update the login handler
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+
         if (login(email, password)) {
             // Redirect to previous location or home
-            navigate(location.state?.from || "/", { replace: true })
+            navigate("/", { replace: true })
         } else {
             setError("Invalid email or password")
         }
     }
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
-            <div className="container mx-auto px-4 py-12 flex-grow flex items-center justify-center">
+        <div className="flex flex-col">
+            <div className="container mx-auto px-4 flex-grow flex items-center justify-center">
                 <div className="w-full max-w-md">
                     <div className="text-center mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -108,7 +108,7 @@ const Login = () => {
                             <div>
                                 <button
                                     type="submit"
-                                    className="w-full bg-primary hover:bg-secondary text-white py-2 px-4 rounded-md font-medium"
+                                    className="w-full bg-gray-800 text-white py-2 px-4 rounded-md font-medium cursor-pointer"
                                 >
                                     Sign in
                                 </button>

@@ -1,5 +1,4 @@
 import { useEffect } from "react"
-import { Link } from "react-router-dom"
 
 import { useAuth } from "@/contexts/AuthContext"
 import { useCart } from "@/contexts/CartContext"
@@ -25,8 +24,8 @@ const Cart = () => {
         <>
             {/* Overlay */}
             <div
-                className={`fixed inset-0 bg-black bg-opacity-30 z-40 transition-opacity duration-300 ${
-                    isCartOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                className={`fixed inset-0 bg-black z-40 transition-opacity duration-300 ${
+                    isCartOpen ? "opacity-30" : "opacity-0 pointer-events-none"
                 }`}
                 onClick={closeCart}
             />
@@ -42,9 +41,16 @@ const Cart = () => {
                         <h2 className="text-xl font-bold">Your Cart</h2>
                         <button
                             onClick={closeCart}
-                            className="text-gray-500 hover:text-gray-700"
+                            className="text-gray-500 hover:text-gray-700 cursor-pointer"
                         >
-                            X
+                            <svg
+                                width={24}
+                                height={24}
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512"
+                            >
+                                <path d="M400 145.49L366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49z" />
+                            </svg>
                         </button>
                     </div>
 
@@ -68,7 +74,7 @@ const Cart = () => {
                     ) : (
                         <>
                             <div className="flex-grow overflow-y-auto">
-                                <ul className="divide-y divide-gray-200">
+                                <ul className="divide-y divide-gray-200 pr-4">
                                     {cart.map((item) => (
                                         <li
                                             key={item.productId}
@@ -97,17 +103,21 @@ const Cart = () => {
                                                             ).toFixed(2)}
                                                         </p>
                                                     </div>
-                                                    <p className="mt-1 text-sm text-gray-500">
+                                                    <p className="mt-1 inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
                                                         {item.product.category}
                                                     </p>
                                                 </div>
-                                                <div className="flex flex-1 items-end justify-between text-sm">
+
+                                                <div className="flex flex-1 items-end justify-between text-sm mt-2">
                                                     <p className="text-gray-500">
-                                                        Qty {item.quantity}
+                                                        <span>Quantity</span>
+                                                        {" - "}
+                                                        {item.quantity}
                                                     </p>
+
                                                     <button
                                                         type="button"
-                                                        className="font-medium text-red-600 hover:text-red-500"
+                                                        className="cursor-pointer font-medium text-red-600 hover:text-red-500"
                                                         onClick={() =>
                                                             removeFromCart(
                                                                 item.productId
@@ -132,13 +142,12 @@ const Cart = () => {
                                     Shipping and taxes calculated at checkout.
                                 </p>
                                 <div className="mt-6">
-                                    <Link
-                                        to="/checkout"
+                                    <button
                                         onClick={closeCart}
-                                        className="flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-secondary"
+                                        className="w-full rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium bg-gray-800 text-white shadow-sm cursor-pointer"
                                     >
                                         Checkout
-                                    </Link>
+                                    </button>
                                 </div>
                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                     <p>

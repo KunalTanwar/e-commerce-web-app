@@ -43,7 +43,7 @@ const Navbar = memo(() => {
                     {user && (
                         <button
                             onClick={openCart}
-                            className="relative p-2 text-gray-700 hover:text-primary"
+                            className="cursor-pointer relative p-2 text-gray-700 hover:text-primary"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -67,15 +67,16 @@ const Navbar = memo(() => {
                         </button>
                     )}
 
-                    {user ? (
+                    {user && (
                         <div className="relative" ref={dropdownRef}>
                             <button
                                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                                className="flex items-center space-x-1 text-gray-700 hover:text-primary"
+                                className="flex items-center space-x-1 cursor-pointer text-gray-700 hover:text-primary"
                             >
                                 <span className="hidden sm:inline">
                                     Hello, {user.name}
                                 </span>
+
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="h-5 w-5"
@@ -94,20 +95,13 @@ const Navbar = memo(() => {
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border border-gray-200">
                                     <button
                                         onClick={handleLogout}
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        className="block w-full cursor-pointer text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
                                         Logout
                                     </button>
                                 </div>
                             )}
                         </div>
-                    ) : (
-                        <Link
-                            to="/login"
-                            className="text-gray-700 hover:text-primary"
-                        >
-                            Login
-                        </Link>
                     )}
                 </div>
             </div>
