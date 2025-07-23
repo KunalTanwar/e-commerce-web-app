@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 
 import { useAuth } from "@/contexts/AuthContext"
 
@@ -7,14 +7,16 @@ const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
-    const { login } = useAuth()
+    const location = useLocation()
     const navigate = useNavigate()
+    const { login } = useAuth()
 
+    // Update the login handler
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-
         if (login(email, password)) {
-            navigate("/")
+            // Redirect to previous location or home
+            navigate(location.state?.from || "/", { replace: true })
         } else {
             setError("Invalid email or password")
         }
@@ -127,12 +129,6 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-
-            <footer className="bg-gray-800 text-white py-6">
-                <div className="container mx-auto px-4 text-center">
-                    <p>© 2023 ShopEasy. All rights reserved.</p>
-                </div>
-            </footer>
         </div>
     )
 }

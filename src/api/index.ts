@@ -25,6 +25,14 @@ export const fetchProductById = async (id: number): Promise<Product> => {
 
         const data = await response.json()
 
+        // Handle different API response structures
+        if (data.products && data.products.length > 0) {
+            return data.products[0]
+        }
+
+        if (data.product) {
+            return data.product
+        }
         return data
     } catch (error) {
         console.error(`Error fetching product ${id}:`, error)

@@ -14,12 +14,17 @@ export type AuthContextType = {
 export type CartItem = {
     productId: number
     quantity: number
+    product: Product
 }
 
 export type CartContextType = {
     cart: CartItem[]
-    addToCart: (productId: number) => void
+    addToCart: (product: Product) => void
     removeFromCart: (productId: number) => void
+    isCartOpen: boolean
+    openCart: () => void
+    closeCart: () => void
+    cartTotal: number
 }
 
 export type Product = {
@@ -39,20 +44,4 @@ export type ProductsResponse = {
     status: string
     message: string
     products: Product[]
-}
-
-export type ButtonProps = {
-    children: React.ReactNode
-    onClick?: () => void
-    type?: "button" | "submit" | "reset"
-    disabled?: boolean
-}
-
-export type InputFieldProps = {
-    label: string
-    type: string
-    value: string
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    placeholder?: string
-    required?: boolean
 }
