@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     />
                 </div>
 
-                <div className="p-4">
+                <div className="px-4 py-6">
                     <div className="flex justify-between items-start">
                         <h3 className="font-medium text-gray-900 line-clamp-2 mb-1">
                             {product.title}
@@ -79,7 +79,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             </Link>
 
             <button
-                className="w-full mt-2 bg-gray-800 text-white py-4 cursor-pointer"
+                className="w-full bg-gray-800 text-white py-4 cursor-pointer"
                 onClick={(e) => {
                     e.preventDefault()
 

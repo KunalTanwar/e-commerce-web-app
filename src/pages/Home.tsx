@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from "react"
+import { useCallback, useEffect, useState, type ChangeEvent } from "react"
 import { Link } from "react-router-dom"
 
 import type { Product } from "@/types"
@@ -10,8 +10,13 @@ import ProductCard from "@/components/ProductCard"
 
 const Home = () => {
     const [products, setProducts] = useState<Product[]>([])
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
+    const [searchQuery, setSearchQuery] = useState("")
+    const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("")
+    const [isSearching, setIsSearching] = useState(false)
+
     const { user } = useAuth()
 
     useEffect(() => {
@@ -19,6 +24,7 @@ const Home = () => {
             try {
                 const data = await fetchProducts()
                 setProducts(data)
+                setFilteredProducts(data)
             } catch (err) {
                 setError("Failed to load products. Please try again later.")
             } finally {
@@ -28,6 +34,40 @@ const Home = () => {
 
         getProducts()
     }, [])
+
+    // Debouncing Search Term
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearchQuery(searchQuery)
+        }, 500)
+
+        return () => clearTimeout(timer)
+    }, [searchQuery])
+
+    // filtering products when debounced search query changes
+    useEffect(() => {
+        if (debouncedSearchQuery.trim() === "") {
+            setFilteredProducts(products)
+            setIsSearching(false)
+
+            return
+        }
+
+        setIsSearching(true)
+
+        const filtered = products.filter((product) =>
+            product.title
+                .toLowerCase()
+                .includes(debouncedSearchQuery.toLowerCase())
+        )
+
+        setFilteredProducts(filtered)
+        setIsSearching(false)
+    }, [debouncedSearchQuery, products])
+
+    const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value)
+    }
 
     if (loading)
         return (
@@ -54,12 +94,13 @@ const Home = () => {
                             type="search"
                             className="px-4 py-2 rounded border border-gray-200 text-gray-900"
                             placeholder="Search for Products"
+                            onChange={handleSearch}
                         />
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {products.length > 0 ? (
-                            products.map((product) => (
+                        {filteredProducts.length > 0 ? (
+                            filteredProducts.map((product) => (
                                 <ProductCard
                                     key={product.id}
                                     product={product}
@@ -81,6 +122,7 @@ const Home = () => {
                                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                                     />
                                 </svg>
+
                                 <h3 className="mt-4 text-lg font-medium text-gray-900">
                                     No products found
                                 </h3>
